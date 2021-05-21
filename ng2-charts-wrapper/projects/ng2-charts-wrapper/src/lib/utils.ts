@@ -8,9 +8,7 @@ export namespace ChartModel {
 
         translate: TranslateService | any;
 
-        constructor(translate?: TranslateService) {
-            this.translate = translate;
-        }
+        constructor(translate?: TranslateService) { }
         
         public getChartTypePieOptions() {
             return {
@@ -79,7 +77,7 @@ export namespace ChartModel {
             }
         }
     
-        public getChartTypeLineOptions(translate?: TranslateService) {
+        public getChartTypeLineOptions(translate?: TranslateService, chartOptionsParams?: ChartOptionsParams) {
             return {
                 responsive: true,
                 legend: {
@@ -92,19 +90,19 @@ export namespace ChartModel {
                         display: true,
                         offset: true,
                         scaleLabel: {
-                            display: true,
-                            labelString: translate != undefined ?
-                                translate.instant('global.dashboard.timeValues') 
-                                : this.translate.instant('global.dashboard.timeValues') 
+                            display: chartOptionsParams?.xAxeLabel != undefined ? true : false,
+                            labelString: chartOptionsParams?.xAxeLabel == undefined ? '' : translate != undefined ?
+                                translate.instant(chartOptionsParams.xAxeLabel)
+                                : this.translate.instant(chartOptionsParams.xAxeLabel)
                         }
                     }],
                     yAxes: [{
                         display: true,
                         scaleLabel: {
-                            display: true,
-                            labelString: translate != undefined ? 
-                                translate.instant('global.dashboard.countValues')
-                                : this.translate.instant('global.dashboard.countValues')
+                            display: chartOptionsParams?.yAxeLabel != undefined ? true : false,
+                            labelString: chartOptionsParams?.yAxeLabel == undefined ? '' : translate != undefined ?
+                                translate.instant(chartOptionsParams.yAxeLabel!)
+                                : this.translate.instant(chartOptionsParams.yAxeLabel)
                         },
                         ticks: {
                             precision: 0
@@ -112,29 +110,91 @@ export namespace ChartModel {
                     }]
                 },
                 title: {
-                    display: true,
-                    text: translate != undefined ? 
-                        translate.instant('global.dashboard.resolvedReceivedTitle')
-                        : this.translate.instant('global.dashboard.resolvedReceivedTitle')
+                    display: chartOptionsParams?.chartTitle != undefined ? true: false,
+                    text: chartOptionsParams?.chartTitle == undefined ? '' : translate != undefined ?
+                        translate.instant(chartOptionsParams.chartTitle)
+                        : this.translate.instant(chartOptionsParams.chartTitle)
+                }
+            }
+        }
+        
+        public getChartTypeDynamicOptions(translate?: TranslateService, chartOptionsParams?: ChartOptionsParams) {
+            return {
+                responsive: true,
+                legend: {
+                    position: 'top',
+                    display: true
+                },
+                maintainAspectRatio: false,
+                plugins: {
+                    labels: {
+                        render: 'value',
+                        fontColor: '#000'
+                    }
+                },
+                scales: {
+                    yAxes: [
+                        {
+                            display: true,
+                            ticks: {
+                                beginAtZero: true,
+                                precision: 0
+                            },
+                            scaleLabel: {
+                                display: chartOptionsParams?.yAxeLabel != undefined ? true : false,
+                                labelString: chartOptionsParams?.yAxeLabel == undefined ? '' : translate != undefined ?
+                                    translate.instant(chartOptionsParams.yAxeLabel!)
+                                    : this.translate.instant(chartOptionsParams.yAxeLabel)
+                            }
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            display: true,
+                            ticks: {
+                                padding: 5
+                            },
+                            scaleLabel: {
+                                display: chartOptionsParams?.xAxeLabel != undefined ? true : false,
+                                labelString: chartOptionsParams?.xAxeLabel == undefined ? '' : translate != undefined ?
+                                    translate.instant(chartOptionsParams.xAxeLabel)
+                                    : this.translate.instant(chartOptionsParams.xAxeLabel)
+                            }
+                        }
+                    ]
+                },
+                title: {
+                    display: chartOptionsParams?.chartTitle != undefined ? true: false,
+                    text: chartOptionsParams?.chartTitle == undefined ? '' : translate != undefined ?
+                        translate.instant(chartOptionsParams.chartTitle)
+                        : this.translate.instant(chartOptionsParams.chartTitle)
                 }
             }
         }
 
         public getChartTypePie(): ChartType {
-            return ChartTypeEnum.SINGLEDATASET_PIE;
+            return ChartTypeEnum.PIE;
         }
 
-        public getChartTypeDoughnutName(): ChartType {
-            return ChartTypeEnum.SINGLEDATASET_DOUGHNUT;
+        public getChartTypeDoughnut(): ChartType {
+            return ChartTypeEnum.DOUGHNUT;
         }
 
-        public getChartTypeBarName(): ChartType {
-            return ChartTypeEnum.SINGLEDATASET_BAR;
+        public getChartTypeBar(): ChartType {
+            return ChartTypeEnum.BAR;
         }
 
-        public getChartTypeLineName(): ChartType {
-            return ChartTypeEnum.MULTIDATASET_LINE;
+        public getChartTypeLine(): ChartType {
+            return ChartTypeEnum.LINE;
         }
+
+        public getChartTypeRadar(): ChartType {
+            return ChartTypeEnum.RADAR;
+        }
+
+        public getChartTypePolar(): ChartType { 
+            return ChartTypeEnum.POLAR;
+        };
 
         // Generic color palette for Pie, Doughnut and Bar charts
         public getBasicChartColors(): Color[] {
@@ -202,8 +262,6 @@ export namespace ChartModel {
             ]
         }
 
-        // Labels for line charts.
-        // Translate key kullanimi ile generic yapilmaya calisilacak.
         public getTimeIntervalDailyLabels(translate?: TranslateService): Label[] {
 
             let hoursOfADay: Label[] = [
@@ -289,19 +347,29 @@ export namespace ChartModel {
         }
 
         public getCurrentChartType(chartType: ChartTypeEnum): ChartType {
-            return chartType === ChartTypeEnum.SINGLEDATASET_PIE ? this.getChartTypePie()
-                    : chartType === ChartTypeEnum.SINGLEDATASET_DOUGHNUT ? this.getChartTypeDoughnutName()
-                        : chartType === ChartTypeEnum.SINGLEDATASET_BAR ? this.getChartTypeBarName()
-                            : chartType === ChartTypeEnum.MULTIDATASET_LINE ? this.getChartTypeLineName()
-                                : this.getChartTypePie();
+            return chartType == ChartTypeEnum.PIE ? this.getChartTypePie()
+                : chartType == ChartTypeEnum.DOUGHNUT ? this.getChartTypeDoughnut()
+                : chartType == ChartTypeEnum.BAR ? this.getChartTypeBar()
+                : chartType == ChartTypeEnum.LINE ? this.getChartTypeLine()
+                : chartType == ChartTypeEnum.RADAR ? this.getChartTypePie()
+                : chartType == ChartTypeEnum.POLAR ? this.getChartTypePie()
+                : chartType == ChartTypeEnum.BUBBLE ? this.getChartTypePie()
+                : chartType == ChartTypeEnum.SCATTER ? this.getChartTypePie()
+                : chartType == ChartTypeEnum.DYNAMIC ? this.getChartTypePie()
+                : this.getChartTypePie();
         }
         
         public getCurrentChartTypeOptions(chartType: ChartTypeEnum) {
-            return chartType === ChartTypeEnum.SINGLEDATASET_PIE ? this.getChartTypePieOptions()
-                    : chartType === ChartTypeEnum.SINGLEDATASET_DOUGHNUT ? this.getChartTypeDoughnutOptions()
-                        : chartType === ChartTypeEnum.SINGLEDATASET_BAR ? this.getChartTypeBarOptions()
-                            : chartType === ChartTypeEnum.MULTIDATASET_LINE ? this.getChartTypeLineOptions()
-                                : this.getChartTypePieOptions();
+            return chartType == ChartTypeEnum.PIE ? this.getChartTypePieOptions()
+                : chartType == ChartTypeEnum.DOUGHNUT ? this.getChartTypeDoughnutOptions()
+                : chartType == ChartTypeEnum.BAR ? this.getChartTypeBarOptions()
+                : chartType == ChartTypeEnum.LINE ? this.getChartTypeLineOptions()
+                : chartType == ChartTypeEnum.RADAR ? this.getChartTypePieOptions()
+                : chartType == ChartTypeEnum.POLAR ? this.getChartTypePieOptions()
+                : chartType == ChartTypeEnum.BUBBLE ? this.getChartTypePieOptions()
+                : chartType == ChartTypeEnum.SCATTER ? this.getChartTypePieOptions()
+                : chartType == ChartTypeEnum.DYNAMIC ? this.getChartTypePieOptions()
+                : this.getChartTypePieOptions();
         }
 
         // For pie, doughnut and bar charts (singleDataSetChartResponse)
@@ -356,16 +424,13 @@ export namespace ChartModel {
                     }
                 });
 
-                chart.chartDataSet.push(new SingleDataSetWithLabel(singleDataSet, chartDataSet.label));
+                chart.chartDataSet.push(new SingleOrMultiDataSetWithLabel(singleDataSet, chartDataSet.label));
             });
 
             chart.chartLabels = timeIntervalLabels;
             chart.isChartLoaded = true;
         }
 
-        // Response'dan dönen time interval (value) değerlerine göre count değerini almak adına hazırlanmış field serisi.
-        // Count ve value değerleri dönen response'dan aşağıdaki değerlere göre count değerleri alınır, eğer 
-        // response tarafından aşağıdaki value değerine karşılık count değeri gelmemiş ise count değerine 0 atanır.
         dailyTimeIntervalLabels: number[] = [
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -416,12 +481,22 @@ export namespace ChartModel {
         }
     }
 
+    export interface ChartOptionsParams {
+        yAxeLabel?: string;
+        xAxeLabel?: string;
+        chartTitle?: string;
+    }
+
     export enum ChartTypeEnum {
-        SINGLEDATASET_PIE = 'pie',
-        SINGLEDATASET_DOUGHNUT = 'doughnut',
-        SINGLEDATASET_BAR = 'bar',
-        MULTIDATASET_LINE = 'line',
-        MULTIDATASET_BAR = 'bar'
+        PIE = 'pie',
+        DOUGHNUT = 'doughnut',
+        BAR = 'bar',
+        LINE = 'line',
+        RADAR = 'radar',
+        POLAR = 'polarArea',
+        BUBBLE = 'bubble',
+        SCATTER = 'scatter',
+        DYNAMIC = 'dynamic'
     }
     
     export class Chart {
@@ -432,7 +507,7 @@ export namespace ChartModel {
         chartLabels: Label[];
 
         chartData: SingleOrMultiDataSet;
-        chartDataSet: SingleDataSetWithLabel[];
+        chartDataSet: SingleOrMultiDataSetWithLabel[];
 
         singleDataSetChartResponse!: SingleDataSetChartResponse;
         multiDataSetChartResponse: MultiDataSetChartResponse[];
@@ -450,11 +525,12 @@ export namespace ChartModel {
           this.chartLabels = chartLabels || [];
           this.chartData = [];
           this.chartDataSet = [];
+          this.singleDataSetChartResponse = new SingleDataSetChartResponse();
           this.multiDataSetChartResponse = [];
         }
     }
     
-    export class SingleDataSetWithLabel {
+    export class SingleOrMultiDataSetWithLabel {
         data: SingleDataSet
         label: string
 
