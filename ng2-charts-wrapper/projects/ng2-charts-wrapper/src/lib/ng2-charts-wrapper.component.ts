@@ -1,5 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ChartWrapperComponent } from './chart-wrapper.component';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ChartModel } from './utils';
+import TimeInterval = ChartModel.TimeInterval;
+import ChartType = ChartModel.ChartType;
+import Chart = ChartModel.Chart;
+import ChartUtils = ChartModel.ChartUtils;
+import { NgxSpinnerModule } from "ngx-spinner";
+import { ChartComponent } from 'chart.js';
+import { SingleDataSetComponent } from './single-dataset-chart.component';
+import { MultiDataSetChartComponent } from './multi-dataset-chart.component';
 
 @Component({
   selector: 'lib-ng2-charts-wrapper',
@@ -10,26 +19,25 @@ import { ChartWrapperComponent } from './chart-wrapper.component';
               <div class="flex-1">
                   <h3 class="text-lg font-semibold leading-tight">Title</h3>
               </div>
-              <div class="relative" (click)="mock()">
-                  <button class="text-xs hover:text-gray-300 h-6 focus:outline-none" (click)="mock()">
+              <div class="relative" (click)="">
+                  <button class="text-xs hover:text-gray-300 h-6 focus:outline-none" (click)="">
                       <span x-text="chartData.options[chartData.selectedOption].label"></span><i class="ml-1 mdi mdi-chevron-down"></i>
                   </button>
-                  <!-- x-transition:enter="transition ease duration-300 transform" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease duration-300 transform" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" -->
                   <div class="bg-gray-700 shadow-lg rounded text-sm absolute top-auto right-0 min-w-full w-32 z-30 mt-1 -mr-3" style="display: none;">
                       <span class="absolute top-0 right-0 w-3 h-3 bg-gray-700 transform rotate-45 -mt-1 mr-3"></span>
                       <div class="bg-gray-700 rounded w-full relative z-10 py-1">
                           <ul class="list-reset text-xs">
-                              <!-- <template x-for="(item,index) in chartData.options">
-                                  <li class="px-4 py-2 hover:bg-gray-600 hover:text-white transition-colors duration-100 cursor-pointer" [ngClass]="{'text-white': index == chartData.selectedOption}" (click)="mock()">
-                                      <span x-text="item.label"></span>
-                                  </li>
-                              </template> -->
+                              <single-dataset-chart *ngIf="" (onChangeChartType)="emitChartType($event)">
+                              </single-dataset-chart>
+
+                              <multi-dataset-chart *ngIf="" (onChangeChartType)="emitChartType($event)">
+                              </multi-dataset-chart>
                           </ul>
                       </div>
                   </div>
               </div>
           </div>
-          <div class="table-wrapper">
+          <div class="chart-wrapper">
               
           </div>
       </div>
@@ -39,16 +47,46 @@ import { ChartWrapperComponent } from './chart-wrapper.component';
     './styles.scss'
   ]
 })
-export class Ng2ChartsWrapperComponent implements OnInit {
+export class Ng2ChartsWrapperComponent implements OnInit, OnDestroy {
 
-  @Input() chartWrapper!: ChartWrapperComponent;
-
+  subscription: Subscription = new Subscription();
+  chartUtils = new ChartUtils();
+  chartQueryParams!: ChartQueryParams;
+  currentChartType!: ChartType;
   @Input() title!: string;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  public onChangeTimeInterval(timeInterval: TimeInterval) {
+    this.chartQueryParams.timeInterval = timeInterval;
+    // mock request
+  }
+
+  /* public onChangeChartType(chartType: ChartType) {
+    this.chartQueryParams.chartType = chartType;
+    // mock request
+  } */
+
+  public onChangeChartType(chartType: ChartType) {
+    this.currentChartType = chartType;
+  }
+
+  public emitChartType(chart: Chart) {
+    chart.currentChartType = this.currentChartType;
+    chart.currentChartTypeOptions = this.chartUtils.getCurrentChartTypeOptions(this.currentChartType);
+  }
+}
+
+export interface ChartQueryParams {
+  timeInterval: TimeInterval;
+  chartType: ChartType
 }

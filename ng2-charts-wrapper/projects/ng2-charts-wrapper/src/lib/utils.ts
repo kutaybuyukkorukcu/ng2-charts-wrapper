@@ -1,5 +1,4 @@
 import { SingleDataSet, Label, SingleOrMultiDataSet, Color } from 'ng2-charts';
-import { ChartType, ChartOptions } from 'chart.js';
 import {TranslateService} from '@ngx-translate/core';
 
 export namespace ChartModel {
@@ -173,28 +172,32 @@ export namespace ChartModel {
         }
 
         public getChartTypePie(): ChartType {
-            return ChartTypeEnum.PIE;
+            return ChartType.PIE;
         }
 
         public getChartTypeDoughnut(): ChartType {
-            return ChartTypeEnum.DOUGHNUT;
+            return ChartType.DOUGHNUT;
         }
 
         public getChartTypeBar(): ChartType {
-            return ChartTypeEnum.BAR;
+            return ChartType.BAR;
         }
 
         public getChartTypeLine(): ChartType {
-            return ChartTypeEnum.LINE;
+            return ChartType.LINE;
         }
 
         public getChartTypeRadar(): ChartType {
-            return ChartTypeEnum.RADAR;
+            return ChartType.RADAR;
         }
 
         public getChartTypePolar(): ChartType { 
-            return ChartTypeEnum.POLAR;
+            return ChartType.POLAR;
         };
+
+        public getChartTypeDynamic(): ChartType {
+            return ChartType.DYNAMIC;
+        }
 
         // Generic color palette for Pie, Doughnut and Bar charts
         public getBasicChartColors(): Color[] {
@@ -346,29 +349,29 @@ export namespace ChartModel {
             return daysInAMonth;
         }
 
-        public getCurrentChartType(chartType: ChartTypeEnum): ChartType {
-            return chartType == ChartTypeEnum.PIE ? this.getChartTypePie()
-                : chartType == ChartTypeEnum.DOUGHNUT ? this.getChartTypeDoughnut()
-                : chartType == ChartTypeEnum.BAR ? this.getChartTypeBar()
-                : chartType == ChartTypeEnum.LINE ? this.getChartTypeLine()
-                : chartType == ChartTypeEnum.RADAR ? this.getChartTypePie()
-                : chartType == ChartTypeEnum.POLAR ? this.getChartTypePie()
-                : chartType == ChartTypeEnum.BUBBLE ? this.getChartTypePie()
-                : chartType == ChartTypeEnum.SCATTER ? this.getChartTypePie()
-                : chartType == ChartTypeEnum.DYNAMIC ? this.getChartTypePie()
+        public getCurrentChartType(chartType: ChartType): ChartType {
+            return chartType == ChartType.PIE ? this.getChartTypePie()
+                : chartType == ChartType.DOUGHNUT ? this.getChartTypeDoughnut()
+                : chartType == ChartType.BAR ? this.getChartTypeBar()
+                : chartType == ChartType.LINE ? this.getChartTypeLine()
+                : chartType == ChartType.RADAR ? this.getChartTypePie()
+                : chartType == ChartType.POLAR ? this.getChartTypePie()
+                : chartType == ChartType.BUBBLE ? this.getChartTypePie()
+                : chartType == ChartType.SCATTER ? this.getChartTypePie()
+                : chartType == ChartType.DYNAMIC ? this.getChartTypeDynamic()
                 : this.getChartTypePie();
         }
         
-        public getCurrentChartTypeOptions(chartType: ChartTypeEnum) {
-            return chartType == ChartTypeEnum.PIE ? this.getChartTypePieOptions()
-                : chartType == ChartTypeEnum.DOUGHNUT ? this.getChartTypeDoughnutOptions()
-                : chartType == ChartTypeEnum.BAR ? this.getChartTypeBarOptions()
-                : chartType == ChartTypeEnum.LINE ? this.getChartTypeLineOptions()
-                : chartType == ChartTypeEnum.RADAR ? this.getChartTypePieOptions()
-                : chartType == ChartTypeEnum.POLAR ? this.getChartTypePieOptions()
-                : chartType == ChartTypeEnum.BUBBLE ? this.getChartTypePieOptions()
-                : chartType == ChartTypeEnum.SCATTER ? this.getChartTypePieOptions()
-                : chartType == ChartTypeEnum.DYNAMIC ? this.getChartTypePieOptions()
+        public getCurrentChartTypeOptions(chartType: ChartType) {
+            return chartType == ChartType.PIE ? this.getChartTypePieOptions()
+                : chartType == ChartType.DOUGHNUT ? this.getChartTypeDoughnutOptions()
+                : chartType == ChartType.BAR ? this.getChartTypeBarOptions()
+                : chartType == ChartType.LINE ? this.getChartTypeLineOptions()
+                : chartType == ChartType.RADAR ? this.getChartTypePieOptions()
+                : chartType == ChartType.POLAR ? this.getChartTypePieOptions()
+                : chartType == ChartType.BUBBLE ? this.getChartTypePieOptions()
+                : chartType == ChartType.SCATTER ? this.getChartTypePieOptions()
+                : chartType == ChartType.DYNAMIC ? this.getChartTypeDynamicOptions()
                 : this.getChartTypePieOptions();
         }
 
@@ -481,13 +484,24 @@ export namespace ChartModel {
         }
     }
 
+    export enum TimeInterval {
+        DAILY = 'DAILY',
+        WEEKLY = 'WEEKLY',
+        MONTHLY = 'MONTHLY',
+        QUARTER_1 = 'QUARTER_1',
+        QUARTER_2 = 'QUARTER_2',
+        QUARTER_3 = 'QUARTER_3',
+        QUARTER_4 = 'QUARTER_4',
+        CUSTOM = 'CUSTOM'
+    }
+
     export interface ChartOptionsParams {
         yAxeLabel?: string;
         xAxeLabel?: string;
         chartTitle?: string;
     }
 
-    export enum ChartTypeEnum {
+    export enum ChartType {
         PIE = 'pie',
         DOUGHNUT = 'doughnut',
         BAR = 'bar',
@@ -501,7 +515,7 @@ export namespace ChartModel {
     
     export class Chart {
         isChartLoaded: boolean;
-        currentChartType: ChartType;
+        currentChartType: any;
         currentChartTypeOptions: any;
         chartColors: Color[];
         chartLabels: Label[];
