@@ -7,7 +7,7 @@ import Chart = ChartModel.Chart;
 import { ChartUtils } from './chartUtils';
 import { NgxSpinnerService } from "ngx-spinner";
 import { HttpClient } from '@angular/common/http';
-import { ApiCallService } from './apicall.service';
+import { ApiCallService } from './apiCall.service';
 import ChartRequest = ChartModel.ChartRequest;
 
 @Component({

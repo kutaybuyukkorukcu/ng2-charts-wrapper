@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import * as Rx from "rxjs/Rx";
 import { from, Observable, throwError } from 'rxjs';
 import { ChartRequest } from './chartRequest';
 import MultiDataSetChartResponse = ChartRequest.MultiDataSetChartResponse;
@@ -13,7 +12,7 @@ import { map, catchError } from 'rxjs/operators';
 export class ApiCallService {
     constructor(private httpClient: HttpClient) {}
 
-    getChartDataSet(dataset: string): Observable<SingleDataSetChartResponse> {
+    getChartDataSet(dataset: string): Observable<any> {
 
         let headers: HttpHeaders = new HttpHeaders();
         headers = headers.append('Accept', 'application/json');

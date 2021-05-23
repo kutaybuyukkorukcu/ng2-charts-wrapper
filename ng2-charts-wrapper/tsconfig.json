@@ -15,6 +15,9 @@
       "ng2-charts-wrapper": [
         "dist/ng2-charts-wrapper/ng2-charts-wrapper",
         "dist/ng2-charts-wrapper"
+      ],
+      "@valor-software/ng2-charts": [
+        "node_modules/ng2-charts"
       ]
     },
     "experimentalDecorators": true,
