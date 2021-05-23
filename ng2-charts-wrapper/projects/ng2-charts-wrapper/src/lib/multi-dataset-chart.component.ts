@@ -1,10 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChartComponent } from 'chart.js';
 import { AnyObject } from 'chart.js/types/basic';
-import { ChartModel } from './utils';
+import { ChartModel } from './chartModel';
 import Chart = ChartModel.Chart;
-import ChartUtils = ChartModel.ChartUtils;
-import ChartType = ChartModel.ChartType;
+import { ChartUtils } from './chartUtils';
 
 @Component({
   selector: 'multi-dataset-chart',
@@ -25,12 +24,10 @@ import ChartType = ChartModel.ChartType;
 })
 export class MultiDataSetChartComponent implements OnInit, ChartComponent {
 
+  @Input()
   chart: Chart = new Chart();
 
   chartUtils = new ChartUtils();
-
-  @Output() 
-  onChangeChartType: EventEmitter<Chart> = new EventEmitter();
 
   id!: string;
   defaults?: AnyObject | undefined;
@@ -39,9 +36,5 @@ export class MultiDataSetChartComponent implements OnInit, ChartComponent {
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  onChangeChart(chart: Chart) {
-    this.onChangeChartType.emit(chart);
   }
 }
