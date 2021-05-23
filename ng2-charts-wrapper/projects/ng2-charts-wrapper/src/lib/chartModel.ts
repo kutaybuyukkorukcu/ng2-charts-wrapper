@@ -26,6 +26,11 @@ export namespace ChartModel {
         DYNAMIC = 'dynamic'
     }
     
+    export enum ChartRequest {
+        SINGLEDATASET = 'singledataset',
+        MULTIDATASET = 'multidataset'
+    }
+
     export class Chart {
         isChartLoaded: boolean;
         currentChartType: any;
@@ -67,4 +72,9 @@ export interface ChartOptionsParams {
     yAxeLabel?: string;
     xAxeLabel?: string;
     chartTitle?: string;
+}
+
+export interface ChartQueryParams {
+    timeInterval: ChartModel.TimeInterval;
+    chartType: ChartModel.ChartType
 }

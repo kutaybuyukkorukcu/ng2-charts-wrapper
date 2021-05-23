@@ -4,6 +4,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { MultiDataSetChartComponent } from './multi-dataset-chart.component';
 import { Ng2ChartsWrapperComponent } from './ng2-charts-wrapper.component';
 import { SingleDataSetComponent } from './single-dataset-chart.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { SingleDataSetComponent } from './single-dataset-chart.component';
   ],
   imports: [
     NgxSpinnerModule,
-    ChartsModule
+    ChartsModule,
+    HttpClientModule
   ],
   exports: [
     Ng2ChartsWrapperComponent
