@@ -1,13 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ChartModel, ChartQueryParams } from './chartModel';
+import { ChartModel } from './chartModel';
 import TimeInterval = ChartModel.TimeInterval;
 import ChartType = ChartModel.ChartType;
 import Chart = ChartModel.Chart;
 import { ChartUtils } from './chartUtils';
 import { NgxSpinnerService } from "ngx-spinner";
 import { HttpClient } from '@angular/common/http';
-import { ApiCallService } from './apiCall.service';
 import ChartRequest = ChartModel.ChartRequest;
 
 @Component({
@@ -36,9 +35,9 @@ import ChartRequest = ChartModel.ChartRequest;
               </div>
           </div>
           <div class="chart-wrapper">
-            <single-dataset-chart *ngIf="isSingleDataSetChartSelected == true" [chart]="chart">
+            <single-dataset-chart *ngIf="isSingleDataSetChartPresent == true" [chart]="chart">
             </single-dataset-chart>
-            <multi-dataset-chart *ngIf="isMultiDataSetChartSelected == true" [chart]="chart">
+            <multi-dataset-chart *ngIf="isMultiDataSetChartPresent == true" [chart]="chart">
             </multi-dataset-chart>      
             <ngx-spinner
               bdColor="rgba(51,51,51,0.8)"
@@ -60,25 +59,29 @@ export class Ng2ChartsWrapperComponent implements OnInit, OnDestroy {
 
   subscription: Subscription = new Subscription();
   chartUtils = new ChartUtils();
-  chartQueryParams!: ChartQueryParams;
   currentChartType!: ChartType;
+  timeInterval!: TimeInterval;
+
+  @Input()
   chart: Chart = new Chart();
+  
   @Input() title!: string;
 
-  isSingleDataSetChartSelected!: boolean;
-  isMultiDataSetChartSelected!: boolean;
+  @Input()
+  isSingleDataSetChartPresent!: boolean;
+  
+  @Input()
+  isMultiDataSetChartPresent!: boolean;
 
-  constructor(private spinner: NgxSpinnerService, private httpClient: HttpClient, private apiService: ApiCallService) {}
+  constructor(private spinner: NgxSpinnerService, private httpClient: HttpClient) {}
 
   ngOnInit(): void {
 
-    this.spinner.show();
+    // this.spinner.show();
     
     // If chartData is not undefined that means singledataset chart is current. and vice versa.
-    this.isSingleDataSetChartSelected = this.chart.chartData != undefined ? true : false;
-    this.isMultiDataSetChartSelected = !this.isSingleDataSetChartSelected;
-
-    this.getChartDataSet(ChartRequest.SINGLEDATASET);
+    this.isSingleDataSetChartPresent = this.chart.chartData != undefined ? true : false;
+    this.isMultiDataSetChartPresent = !this.isSingleDataSetChartPresent;
   }
 
   ngOnDestroy(): void {
@@ -86,8 +89,7 @@ export class Ng2ChartsWrapperComponent implements OnInit, OnDestroy {
   }
 
   public onChangeTimeInterval(timeInterval: TimeInterval) {
-    this.chartQueryParams.timeInterval = timeInterval;
-    // mock request
+    this.timeInterval = timeInterval;
   }
 
   public onChangeChartType(chartType: ChartType) {
@@ -96,18 +98,18 @@ export class Ng2ChartsWrapperComponent implements OnInit, OnDestroy {
     this.chart.currentChartTypeOptions = this.chartUtils.getCurrentChartTypeOptions(this.currentChartType);
   }
 
-  public getChartDataSet(dataset: string) {
-    this.apiService
-    .getChartDataSet(dataset)
-    .subscribe((data: any) => {
+  // public getChartDataSet(dataset: string) {
+  //   this.apiService
+  //   .getChartDataSet(dataset)
+  //   .subscribe((data: any) => {
 
-      if (this.isSingleDataSetChartSelected == true) {
-        this.chart.chartData = data;
-        this.isMultiDataSetChartSelected = false;
-      } else if (this.isMultiDataSetChartSelected == true) {
-        this.chart.chartDataSet = data;
-        this.isSingleDataSetChartSelected = false;
-      }
-    });
-  }
+  //     if (this.isSingleDataSetChartPresent == true) {
+  //       this.chart.chartData = data;
+  //       this.isMultiDataSetChartPresent = false;
+  //     } else if (this.isMultiDataSetChartPresent == true) {
+  //       this.chart.chartDataSet = data;
+  //       this.isSingleDataSetChartPresent = false;
+  //     }
+  //   });
+  // }
 }

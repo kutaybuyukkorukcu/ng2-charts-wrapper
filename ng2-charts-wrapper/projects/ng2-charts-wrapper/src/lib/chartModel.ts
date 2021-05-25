@@ -67,14 +67,3 @@ export namespace ChartModel {
         }
     }
 }
-
-export interface ChartOptionsParams {
-    yAxeLabel?: string;
-    xAxeLabel?: string;
-    chartTitle?: string;
-}
-
-export interface ChartQueryParams {
-    timeInterval: ChartModel.TimeInterval;
-    chartType: ChartModel.ChartType
-}

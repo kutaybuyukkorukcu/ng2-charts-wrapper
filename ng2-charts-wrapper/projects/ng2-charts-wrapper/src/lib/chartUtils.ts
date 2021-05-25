@@ -1,18 +1,15 @@
 import { TranslateService } from "@ngx-translate/core";
 import { SingleDataSet, Label, SingleOrMultiDataSet, Color } from 'ng2-charts';
-import { ChartModel, ChartOptionsParams } from "./chartModel";
-import Chart = ChartModel.Chart;
+import { ChartModel } from "./chartModel";
 import ChartType = ChartModel.ChartType;
-import SingleOrMultiDataSetWithLabel = ChartModel.SingleOrMultiDataSetWithLabel;
-import { ChartRequest } from "./chartRequest";
-import SingleDataSetChartResponse = ChartRequest.SingleDataSetChartResponse;
-import MultiDataSetChartResponse = ChartRequest.MultiDataSetChartResponse;
 
 export class ChartUtils {
 
     translate: TranslateService | any;
 
-    constructor(translate?: TranslateService) { }
+    constructor(translate?: TranslateService) { 
+        this.translate = translate;
+    }
     
     public getChartTypePieOptions() {
         return {
@@ -380,65 +377,6 @@ export class ChartUtils {
             : this.getChartTypePieOptions();
     }
 
-    // For pie, doughnut and bar charts (singleDataSetChartResponse)
-    public fillGivenChartData(chart: Chart, singleDataSetChartResponse: SingleDataSetChartResponse, extractionIndex: number = 4) {
-        const label: string = this.translate.instant('global.dashboard.others')
-        let count: number | any = singleDataSetChartResponse.totalDataCount;
-    
-        chart.chartLabels = [];
-        chart.chartData = [];
-    
-        singleDataSetChartResponse.items = singleDataSetChartResponse.items.slice(0, extractionIndex);
-    
-        for (let item of singleDataSetChartResponse.items) {
-          count -= item.data;
-        }
-    
-        if (singleDataSetChartResponse.totalDataCount > 0) {
-          for (let item of singleDataSetChartResponse.items) {
-            chart.chartLabels.push(item.label);
-            chart.chartData.push(item.data);
-          }
-    
-          if (count > 0) {
-            chart.chartLabels.push(label);
-            chart.chartData.push(count);
-          }
-        }
-    
-        chart.isChartLoaded = true;
-    }
-
-    // For customized line chart (lineChartData)
-    public fillGivenChartDataSet(chart: Chart, multiDataSetChartResponse: MultiDataSetChartResponse[], timeIntervalFields: number[], timeIntervalLabels: Label[]) {
-        let isTimeIntervalPresent = false;
-        let singleDataSet: SingleDataSet = [];
-
-
-        multiDataSetChartResponse.forEach((chartDataSet: MultiDataSetChartResponse) => {
-
-            singleDataSet = [];
-            timeIntervalFields.forEach((timeInterval) => {
-                isTimeIntervalPresent = false;
-                chartDataSet.multiDataSet.forEach((item) => {
-                    if (timeInterval == item.data) {
-                        singleDataSet.push(item.timeInterval);
-                        isTimeIntervalPresent = true;
-                    }
-                });
-
-                if (isTimeIntervalPresent == false) {
-                    singleDataSet.push(0);
-                }
-            });
-
-            chart.chartDataSet.push(new SingleOrMultiDataSetWithLabel(singleDataSet, chartDataSet.label));
-        });
-
-        chart.chartLabels = timeIntervalLabels;
-        chart.isChartLoaded = true;
-    }
-
     dailyTimeIntervalLabels: number[] = [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -487,6 +425,12 @@ export class ChartUtils {
     public getTotalCountOfDaysInThisMonth() {
        return new Date(NaN, NaN,0).getDate();
     }
+}
+
+export interface ChartOptionsParams {
+    yAxeLabel?: string;
+    xAxeLabel?: string;
+    chartTitle?: string;
 }
 
 export const getChartTypePieOptions = ChartUtils.prototype.getChartTypePieOptions;
