@@ -25,11 +25,6 @@ export namespace ChartModel {
         SCATTER = 'scatter',
         DYNAMIC = 'dynamic'
     }
-    
-    export enum ChartRequest {
-        SINGLEDATASET = 'singledataset',
-        MULTIDATASET = 'multidataset'
-    }
 
     export class Chart {
         isChartLoaded: boolean;

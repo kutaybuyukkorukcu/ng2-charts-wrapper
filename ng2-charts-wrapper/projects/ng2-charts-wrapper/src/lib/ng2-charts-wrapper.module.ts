@@ -19,7 +19,7 @@ import { ChartModel } from './chartModel';
     HttpClientModule
   ],
   exports: [
-    Ng2ChartsWrapperComponent    
+    Ng2ChartsWrapperComponent
   ]
 })
 export class Ng2ChartsWrapperModule { }

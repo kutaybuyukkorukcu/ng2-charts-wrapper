@@ -7,7 +7,6 @@ import Chart = ChartModel.Chart;
 import { ChartUtils } from './chartUtils';
 import { NgxSpinnerService } from "ngx-spinner";
 import { HttpClient } from '@angular/common/http';
-import ChartRequest = ChartModel.ChartRequest;
 
 @Component({
   selector: 'lib-ng2-charts-wrapper',
@@ -97,19 +96,4 @@ export class Ng2ChartsWrapperComponent implements OnInit, OnDestroy {
     this.chart.currentChartType = this.currentChartType;
     this.chart.currentChartTypeOptions = this.chartUtils.getCurrentChartTypeOptions(this.currentChartType);
   }
-
-  // public getChartDataSet(dataset: string) {
-  //   this.apiService
-  //   .getChartDataSet(dataset)
-  //   .subscribe((data: any) => {
-
-  //     if (this.isSingleDataSetChartPresent == true) {
-  //       this.chart.chartData = data;
-  //       this.isMultiDataSetChartPresent = false;
-  //     } else if (this.isMultiDataSetChartPresent == true) {
-  //       this.chart.chartDataSet = data;
-  //       this.isSingleDataSetChartPresent = false;
-  //     }
-  //   });
-  // }
 }

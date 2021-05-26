@@ -1,7 +1,12 @@
 import { TranslateService } from "@ngx-translate/core";
-import { SingleDataSet, Label, SingleOrMultiDataSet, Color } from 'ng2-charts';
+import { SingleDataSet, Label, Color } from 'ng2-charts';
 import { ChartModel } from "./chartModel";
+import SingleOrMultiDataSetWithLabel = ChartModel.SingleOrMultiDataSetWithLabel;
 import ChartType = ChartModel.ChartType;
+import Chart = ChartModel.Chart;
+import { ChartRequest } from './chartRequest';
+import MultiDataSetChartResponse =  ChartRequest.MultiDataSetChartResponse;
+import SingleDataSetChartResponse = ChartRequest.SingleDataSetChartResponse;
 
 export class ChartUtils {
 
@@ -424,6 +429,65 @@ export class ChartUtils {
 
     public getTotalCountOfDaysInThisMonth() {
        return new Date(NaN, NaN,0).getDate();
+    }
+
+    // For pie, doughnut and bar charts (singleDataSetChartResponse)
+    public fillGivenChartData(chart: Chart, singleDataSetChartResponse: SingleDataSetChartResponse, extractionIndex: number = 4) {
+        const label: string = this.translate.instant('Others')
+        let count: number | any = singleDataSetChartResponse.totalDataCount;
+
+        chart.chartLabels = [];
+        chart.chartData = [];
+
+        singleDataSetChartResponse.singleDataSet = singleDataSetChartResponse.singleDataSet.slice(0, extractionIndex);
+
+        for (let item of singleDataSetChartResponse.singleDataSet) {
+            count -= item.data;
+        }
+
+        if (singleDataSetChartResponse.totalDataCount > 0) {
+            for (let item of singleDataSetChartResponse.singleDataSet) {
+            chart.chartLabels.push(item.label);
+            chart.chartData.push(item.data);
+            }
+
+            if (count > 0) {
+            chart.chartLabels.push(label);
+            chart.chartData.push(count);
+            }
+        }
+
+        chart.isChartLoaded = true;
+    }
+
+    // For customized line chart (lineChartData)
+    public fillGivenChartDataSet(chart: Chart, multiDataSetChartResponse: MultiDataSetChartResponse[], timeIntervalFields: number[], timeIntervalLabels: Label[]) {
+        let isTimeIntervalPresent = false;
+        let singleDataSet: SingleDataSet = [];
+
+
+        multiDataSetChartResponse.forEach((chartDataSet: MultiDataSetChartResponse) => {
+
+            singleDataSet = [];
+            timeIntervalFields.forEach((timeInterval) => {
+                isTimeIntervalPresent = false;
+                chartDataSet.multiDataSet.forEach((item) => {
+                    if (timeInterval == item.data) {
+                        singleDataSet.push(item.timeInterval);
+                        isTimeIntervalPresent = true;
+                    }
+                });
+
+                if (isTimeIntervalPresent == false) {
+                    singleDataSet.push(0);
+                }
+            });
+
+            chart.chartDataSet.push(new SingleOrMultiDataSetWithLabel(singleDataSet, chartDataSet.label));
+        });
+
+        chart.chartLabels = timeIntervalLabels;
+        chart.isChartLoaded = true;
     }
 }
 
