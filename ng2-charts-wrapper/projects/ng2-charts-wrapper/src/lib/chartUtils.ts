@@ -1,9 +1,6 @@
 import { TranslateService } from "@ngx-translate/core";
 import { SingleDataSet, Label, Color } from 'ng2-charts';
-import { ChartModel } from "./chartModel";
-import SingleOrMultiDataSetWithLabel = ChartModel.SingleOrMultiDataSetWithLabel;
-import ChartType = ChartModel.ChartType;
-import Chart = ChartModel.Chart;
+import { Chart, ChartType, SingleOrMultiDataSetWithLabel } from "./chartModel";
 import { ChartRequest } from './chartRequest';
 import MultiDataSetChartResponse =  ChartRequest.MultiDataSetChartResponse;
 import SingleDataSetChartResponse = ChartRequest.SingleDataSetChartResponse;

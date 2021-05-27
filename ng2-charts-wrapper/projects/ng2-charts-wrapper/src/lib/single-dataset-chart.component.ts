@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { ChartModel } from './chartModel';
-import Chart = ChartModel.Chart;
+import { Chart } from './chartModel';
 import { ChartUtils } from './chartUtils';
 
 @Component({
