@@ -7,3 +7,6 @@ export * from './lib/ng2-charts-wrapper.component';
 export * from './lib/ng2-charts-wrapper.module';
 export * from './lib/single-dataset-chart.component';
 export * from './lib/multi-dataset-chart.component';
+export * from './lib/chartModel';
+export * from './lib/chartRequest';
+export * from './lib/chartUtils';

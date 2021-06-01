@@ -18,7 +18,9 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
   ],
   exports: [
-    Ng2ChartsWrapperComponent
+    Ng2ChartsWrapperComponent,
+    MultiDataSetChartComponent,
+    SingleDataSetComponent
   ]
 })
 export class Ng2ChartsWrapperModule { }
