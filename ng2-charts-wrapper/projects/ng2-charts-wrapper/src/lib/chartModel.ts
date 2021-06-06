@@ -12,15 +12,15 @@ export enum TimeInterval {
 }
 
 export enum ChartType {
-    PIE = 'PIE',
-    DOUGHNUT = 'DOUGHNUT',
-    BAR = 'BAR',
-    LINE = 'LINE',
-    RADAR = 'RADAR',
-    POLAR = 'POLARAREA',
-    BUBBLE = 'BUBBLE',
-    SCATTER = 'SCATTER',
-    DYNAMIC = 'DYNAMIC'
+    PIE = 'pie',
+    DOUGHNUT = 'doughnut',
+    BAR = 'bar',
+    LINE = 'line',
+    RADAR = 'radar',
+    POLAR = 'polararea',
+    BUBBLE = 'bubble',
+    SCATTER = 'scatter',
+    DYNAMIC = 'dynamic'
 }
 export class Chart {
     isChartLoaded: boolean;
