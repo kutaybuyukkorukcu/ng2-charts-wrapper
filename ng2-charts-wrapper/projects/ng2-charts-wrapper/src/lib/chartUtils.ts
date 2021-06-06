@@ -269,33 +269,80 @@ export class ChartUtils {
         ]
     }
 
+    
+    public getChartTypeNames(translate?: TranslateService): string[] {
+        
+        let chartTypeEnumValues: string[] = [
+            'chartType.pie',
+            'chartType.doughnut',
+            'chartType.bar',
+            'chartType.line',
+            'chartType.radar',
+            'chartType.polar',
+            'chartType.bubble',
+            'chartType.scatter',
+            'chartType.dynamic'
+        ];
+
+        let chartTypeNames: string[] = [];
+
+        chartTypeEnumValues.forEach(item => {
+            chartTypeNames = [...chartTypeNames, translate != undefined ? translate.instant(item): this.translate.instant(item)]
+        })
+
+        return chartTypeNames;
+    }
+
+    public getTimeIntervalNames(translate?: TranslateService): string[] {
+        
+        let timeIntervalEnumValues: string[] = [
+            'timeInterval.header.daily',
+            'timeInterval.header.weekly',
+            'timeInterval.header.monthly',
+            'timeInterval.header.quarter1',
+            'timeInterval.header.quarter2',
+            'timeInterval.header.quarter3',
+            'timeInterval.header.quarter4',
+        ];
+
+        let timeIntervalNames: string[] = [];
+
+        timeIntervalEnumValues.forEach(item => {
+            timeIntervalNames.push(
+                translate != undefined ? translate.instant(item) : this.translate.instant(item)
+            );
+        })
+
+        return timeIntervalNames;
+    }
+
     public getTimeIntervalDailyLabels(translate?: TranslateService): Label[] {
 
         let hoursOfADay: Label[] = [
-            'translate.zero',
-            'translate.one',
-            'translate.two',
-            'translate.three',
-            'translate.four',
-            'translate.five',
-            'translate.six',
-            'translate.seven',
-            'translate.eight',
-            'translate.nine',
-            'translate.ten',
-            'translate.eleven',
-            'translate.twelve',
-            'translate.thirteen',
-            'translate.fourteen',
-            'translate.fifteen',
-            'translate.sixteen',
-            'translate.seventeen',
-            'translate.eighteen',
-            'translate.nineteen',
-            'translate.twenty',
-            'translate.twentyone',
-            'translate.twentytwo',
-            'translate.twentythree'
+            'timeInterval.day.zero',
+            'timeInterval.day.one',
+            'timeInterval.day.two',
+            'timeInterval.day.three',
+            'timeInterval.day.four',
+            'timeInterval.day.five',
+            'timeInterval.day.six',
+            'timeInterval.day.seven',
+            'timeInterval.day.eight',
+            'timeInterval.day.nine',
+            'timeInterval.day.ten',
+            'timeInterval.day.eleven',
+            'timeInterval.day.twelve',
+            'timeInterval.day.thirteen',
+            'timeInterval.day.fourteen',
+            'timeInterval.day.fifteen',
+            'timeInterval.day.sixteen',
+            'timeInterval.day.seventeen',
+            'timeInterval.day.eighteen',
+            'timeInterval.day.nineteen',
+            'timeInterval.day.twenty',
+            'timeInterval.day.twentyone',
+            'timeInterval.day.twentytwo',
+            'timeInterval.day.twentythree'
         ];
 
         let hours: Label[] = [];
@@ -312,13 +359,13 @@ export class ChartUtils {
     public getTimeIntervalWeeklyLabels(translate?: TranslateService): Label[] {
         
         let daysOfAWeek: Label[] = [
-            'translate.monday',
-            'translate.tuesday',
-            'translate.wednesday',
-            'translate.thursday',
-            'translate.friday',
-            'translate.saturday',
-            'translate.sunday'
+            'timeInterval.week.monday',
+            'timeInterval.week.tuesday',
+            'timeInterval.week.wednesday',
+            'timeInterval.week.thursday',
+            'timeInterval.week.friday',
+            'timeInterval.week.saturday',
+            'timeInterval.week.sunday'
         ];
         let weeks: Label[] = [];
 

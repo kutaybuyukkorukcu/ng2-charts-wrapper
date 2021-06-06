@@ -8,22 +8,20 @@ export enum TimeInterval {
     QUARTER_1 = 'QUARTER_1',
     QUARTER_2 = 'QUARTER_2',
     QUARTER_3 = 'QUARTER_3',
-    QUARTER_4 = 'QUARTER_4',
-    CUSTOM = 'CUSTOM'
+    QUARTER_4 = 'QUARTER_4'
 }
 
 export enum ChartType {
-    PIE = 'pie',
-    DOUGHNUT = 'doughnut',
-    BAR = 'bar',
-    LINE = 'line',
-    RADAR = 'radar',
-    POLAR = 'polarArea',
-    BUBBLE = 'bubble',
-    SCATTER = 'scatter',
-    DYNAMIC = 'dynamic'
+    PIE = 'PIE',
+    DOUGHNUT = 'DOUGHNUT',
+    BAR = 'BAR',
+    LINE = 'LINE',
+    RADAR = 'RADAR',
+    POLAR = 'POLARAREA',
+    BUBBLE = 'BUBBLE',
+    SCATTER = 'SCATTER',
+    DYNAMIC = 'DYNAMIC'
 }
-
 export class Chart {
     isChartLoaded: boolean;
     currentChartType: any;
