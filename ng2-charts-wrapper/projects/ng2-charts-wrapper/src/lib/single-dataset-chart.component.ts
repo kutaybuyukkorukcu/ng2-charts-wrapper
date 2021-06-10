@@ -5,7 +5,7 @@ import { ChartUtils } from './chartUtils';
 @Component({
   selector: 'single-dataset-chart',
   template: `
-    <canvas *ngIf="chart.isChartLoaded == true"
+    <canvas
       baseChart
       class="chart"
       [data]="chart.chartData"
