@@ -5,16 +5,18 @@ import { ChartUtils } from './chartUtils';
 @Component({
   selector: 'multi-dataset-chart',
   template: `
-    <canvas 
-      baseChart
-      class="chart"
-      [datasets]="chart.chartDataSet"
-      [labels]="chart.chartLabels"
-      [chartType]="chart.currentChartType"
-      [options]="chart.currentChartTypeOptions"
-      [colors]="chart.chartColors"
-    >
-    </canvas>
+    <div class="chart-wrapper mt-5">
+      <canvas 
+        baseChart
+        class="chart"
+        [datasets]="chart.chartDataSet"
+        [labels]="chart.chartLabels"
+        [chartType]="chart.currentChartType"
+        [options]="chart.currentChartTypeOptions"
+        [colors]="chart.chartColors"
+      >
+      </canvas>
+    </div>
   `,
   styles: [
   ]
