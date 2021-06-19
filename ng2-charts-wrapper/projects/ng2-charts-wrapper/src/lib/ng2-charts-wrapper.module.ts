@@ -5,10 +5,7 @@ import { MultiDataSetChartComponent } from './multi-dataset-chart.component';
 import { Ng2ChartsWrapperComponent } from './ng2-charts-wrapper.component';
 import { SingleDataSetComponent } from './single-dataset-chart.component';
 import { HttpClientModule } from '@angular/common/http';
-
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -20,13 +17,7 @@ import { HttpClient } from '@angular/common/http';
     NgxSpinnerModule,
     ChartsModule,
     HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+    TranslateModule
   ],
   exports: [
     Ng2ChartsWrapperComponent,
@@ -35,7 +26,3 @@ import { HttpClient } from '@angular/common/http';
   ]
 })
 export class Ng2ChartsWrapperModule { }
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, '../i18n/', '.json');
-}

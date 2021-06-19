@@ -27,9 +27,10 @@ import { ChartType } from './chartModel';
 export class MultiDataSetChartComponent implements OnInit, OnDestroy {
 
   subscription: Subscription = new Subscription();
-  chartUtils!: ChartUtils;
 
-  @Input() chart: Chart = new Chart();
+  @Input() chart!: Chart;
+
+  @Input() chartUtils!: ChartUtils;
   
   @Input() language: string = 'en';
 
@@ -39,8 +40,6 @@ export class MultiDataSetChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.translateService.setDefaultLang(this.language);
-    this.chartUtils = new ChartUtils(this.translateService);
   }
 
   ngOnDestroy(): void {
