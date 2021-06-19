@@ -28,17 +28,20 @@ import { ChartType } from './chartModel';
 export class SingleDataSetComponent implements OnInit, OnDestroy {
 
   subscription: Subscription = new Subscription();
-  chartUtils = new ChartUtils(this.translate);
+  chartUtils!: ChartUtils;
 
   @Input() chart: Chart = new Chart();
 
   @Input() language: string = 'en';
 
-  constructor(private httpClient: HttpClient, private translate: TranslateService) {
-    translate.setDefaultLang(this.language);
+  @Input() translateService!: TranslateService;
+
+  constructor(private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
+    this.translateService.setDefaultLang(this.language);
+    this.chartUtils = new ChartUtils(this.translateService);
   }
 
   ngOnDestroy(): void {
@@ -51,6 +54,6 @@ export class SingleDataSetComponent implements OnInit, OnDestroy {
   }
 
   onChangeLanguage(language: string): void {
-    this.translate.use(language);
+    this.translateService.use(language);
   }
 }

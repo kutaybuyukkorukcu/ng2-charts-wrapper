@@ -36,6 +36,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class Ng2ChartsWrapperModule { }
 
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http);
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../i18n/', '.json');
 }
