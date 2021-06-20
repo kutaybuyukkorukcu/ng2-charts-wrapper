@@ -426,6 +426,82 @@ export class ChartUtils {
             : this.getChartTypePieOptions();
     }
 
+    public getCurrentChartColors(chartType: ChartType): Color[] {
+
+        if (chartType == ChartType.BAR || ChartType.PIE || ChartType.DOUGHNUT) {
+            return [
+                {
+                    backgroundColor: [
+                        '#F94144',
+                        '#F3722C',
+                        '#F8961E',
+                        '#F9844A',
+                        '#F9C74F',
+                        '#90BE6D',
+                        '#43AA8B',
+                        '#4D908E',
+                        '#577590',
+                        '#277DA1'
+                    ]
+                }
+            ];
+        }
+        
+        return [
+            {
+                borderColor: '#264653',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                pointBackgroundColor: '#33344F',
+                pointHoverBorderWidth: 4,
+                pointHoverRadius: 4,
+                pointRadius: 3
+            },
+            {
+                borderColor: '#2A9D8F',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                pointBackgroundColor: '#5B5C92',
+                pointHoverBorderWidth: 4,
+                pointHoverRadius: 4,
+                pointRadius: 3
+            },
+            {
+                borderColor: '#E9C46A',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                pointBackgroundColor: '#D8D87F',
+                pointHoverBorderWidth: 4,
+                pointHoverRadius: 4,
+                pointRadius: 3
+            },
+            {
+                borderColor: '#F4A261',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                pointBackgroundColor: '#D0CF70',
+                pointHoverBorderWidth: 4,
+                pointHoverRadius: 4,
+                pointRadius: 3
+            },
+            {
+                borderColor: '#E76F51',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                pointBackgroundColor: '#B3B158',
+                pointHoverBorderWidth: 4,
+                pointHoverRadius: 4,
+                pointRadius: 3
+            }
+        ];
+    }
+
+    public resetChartByChartType(chart: Chart, chartType: ChartType): Chart {
+
+        chart.currentChartType = this.getCurrentChartType(chartType);
+        chart.currentChartTypeOptions = this.getCurrentChartTypeOptions(chartType);
+        chart.chartColors = this.getCurrentChartColors(chartType);
+        chart.chartData = [];
+        chart.chartDataSet = [];
+
+        return chart;
+    }
+
     dailyTimeIntervalLabels: number[] = [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
