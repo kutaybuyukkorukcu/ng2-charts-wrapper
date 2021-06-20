@@ -428,7 +428,10 @@ export class ChartUtils {
 
     public getCurrentChartColors(chartType: ChartType): Color[] {
 
-        if (chartType == ChartType.BAR || ChartType.PIE || ChartType.DOUGHNUT) {
+        if (chartType == ChartType.BAR || 
+            chartType == ChartType.PIE ||
+            chartType == ChartType.DOUGHNUT
+        ) {
             return [
                 {
                     backgroundColor: [
