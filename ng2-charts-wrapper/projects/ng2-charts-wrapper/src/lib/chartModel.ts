@@ -1,16 +1,6 @@
 import { SingleDataSet, Label, SingleOrMultiDataSet, Color } from 'ng2-charts';
 import { getChartTypePie, getChartTypePieOptions, getSingleDataSetChartColors } from './chartUtils';
 
-export enum TimeInterval {
-    DAILY = 'DAILY',
-    WEEKLY = 'WEEKLY',
-    MONTHLY = 'MONTHLY',
-    QUARTER_1 = 'QUARTER_1',
-    QUARTER_2 = 'QUARTER_2',
-    QUARTER_3 = 'QUARTER_3',
-    QUARTER_4 = 'QUARTER_4'
-}
-
 export enum ChartType {
     PIE = 'pie',
     DOUGHNUT = 'doughnut',

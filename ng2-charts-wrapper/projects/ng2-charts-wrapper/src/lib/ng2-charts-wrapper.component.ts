@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { TimeInterval, ChartType, Chart } from './chartModel';
+import { ChartType, Chart } from './chartModel';
 import { ChartUtils } from './chartUtils';
 import { NgxSpinnerService } from "ngx-spinner";
 import { HttpClient } from '@angular/common/http';
