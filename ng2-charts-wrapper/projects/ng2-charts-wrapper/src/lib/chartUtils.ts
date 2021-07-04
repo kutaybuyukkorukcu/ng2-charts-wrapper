@@ -1,5 +1,6 @@
 import { TranslateService } from "@ngx-translate/core";
 import { SingleDataSet, Label, Color } from 'ng2-charts';
+import { TimeInterval } from "./chartModel";
 import { Chart, ChartType, SingleOrMultiDataSetWithLabel } from "./chartModel";
 import { ChartRequest } from './chartRequest';
 import MultiDataSetChartResponse =  ChartRequest.MultiDataSetChartResponse;
@@ -378,26 +379,45 @@ export class ChartUtils {
         return weeks;
     }
 
-    public getTimeIntervalMonthlyLabels(): Label[] {
+    public getTimeIntervalMonthlyLabels(translate?: TranslateService): Label[] {
 
-        let totalCountOfDaysInThisMonth = this.getTotalCountOfDaysInThisMonth();
+        const weeksInMonth = this.getWeeksInMonth();
 
-        let daysInAMonth = [
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-            '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
-            '21', '22', '23', '24', '25', '26', '27', '28', '29', '30',
-            '31'
-        ];
+        let weeksOfAMonth: Label[] = [];
 
-        if (totalCountOfDaysInThisMonth == 28) {
-            return daysInAMonth.slice(-3);
-        } else if (totalCountOfDaysInThisMonth == 29) {
-            return daysInAMonth.slice(-2);
-        } else if (totalCountOfDaysInThisMonth == 30) {
-            return daysInAMonth.slice(-1);
+        if (weeksInMonth.length == 4) {
+            weeksOfAMonth = [
+                'timeInterval.month.first',
+                'timeInterval.month.second',
+                'timeInterval.month.third',
+                'timeInterval.month.fourth'
+            ];
+        } else if (weeksInMonth.length == 5) {
+            weeksOfAMonth = [
+                'timeInterval.month.first',
+                'timeInterval.month.second',
+                'timeInterval.month.third',
+                'timeInterval.month.fourth',
+                'timeInterval.month.fifth'
+            ];
+        } else {
+            weeksOfAMonth = [
+                'timeInterval.month.first',
+                'timeInterval.month.second',
+                'timeInterval.month.third',
+                'timeInterval.month.fourth'
+            ];
         }
 
-        return daysInAMonth;
+        let weeks: Label[] = [];
+
+        weeksOfAMonth.forEach(item => {
+            weeks = [
+                ...weeks, translate != undefined ? translate.instant(item) : this.translate.instant(item)
+            ];
+        })
+
+        return weeks;
     }
 
     public getCurrentChartType(chartType: ChartType): ChartType {
@@ -501,6 +521,7 @@ export class ChartUtils {
         chart.chartColors = this.getCurrentChartColors(chartType);
         chart.chartData = [];
         chart.chartDataSet = [];
+        chart.currentTimeInterval = chart.currentTimeInterval;
 
         return chart;
     }
@@ -550,6 +571,29 @@ export class ChartUtils {
         return daysInAMonth;
     }
 
+    public getWeeksInMonth(): any[] {
+
+        const currentYear: number = new Date().getFullYear();
+        const currentMonth: number = new Date().getMonth();
+
+        const weeks: any[] = [],
+          firstDate: Date = new Date(currentYear, currentMonth, 1),
+          lastDate: Date = new Date(currentYear, currentMonth + 1, 0),
+          numDays: number = lastDate.getDate();
+      
+        let dayOfWeekCounter = firstDate.getDay();
+      
+        for (let date = 1; date <= numDays; date++) {
+          if (dayOfWeekCounter === 0 || weeks.length === 0) {
+            weeks.push([]);
+          }
+          weeks[weeks.length - 1].push(date);
+          dayOfWeekCounter = (dayOfWeekCounter + 1) % 7;
+        }
+      
+        return weeks.filter((w) => !!w.length);
+    }
+
     public getTotalCountOfDaysInThisMonth() {
        return new Date(NaN, NaN,0).getDate();
     }
@@ -588,7 +632,6 @@ export class ChartUtils {
         let isTimeIntervalPresent = false;
         let singleDataSet: SingleDataSet = [];
 
-
         multiDataSetChartResponse.forEach((chartDataSet: MultiDataSetChartResponse) => {
 
             singleDataSet = [];
@@ -605,6 +648,27 @@ export class ChartUtils {
                     singleDataSet.push(0);
                 }
             });
+
+            // For monthly we have to alter the chart data since we dont wanna show days of a month and use weeks in a month as labels.
+            // Basically chart data (array) has 28-29, 30 or 31 data in it (depending on the month) (1,2,3,4,5,6,7 ...)
+            // each number representing the day in a month. What we do with below code is creating an array of 5 filled with chart data.
+            // (first week, second week, third week ...)
+            if (TimeInterval.MONTHLY == chart.currentTimeInterval) {
+                const weeks = this.getWeeksInMonth();
+                
+                let monthlyAlteredDataSet: any[] = [];
+
+                weeks.map((week: any[]) => {
+                    let sumOfDataForWeek: number = 0;
+                    week.map((i) => {
+                        sumOfDataForWeek += Number(singleDataSet[i - 1]);
+                    })
+                    monthlyAlteredDataSet.push(sumOfDataForWeek);
+                })
+
+                singleDataSet = monthlyAlteredDataSet;
+                monthlyAlteredDataSet = [];
+            }
 
             chart.chartDataSet.push(new SingleOrMultiDataSetWithLabel(singleDataSet, chartDataSet.label));
         });
